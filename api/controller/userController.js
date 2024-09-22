@@ -8,12 +8,12 @@ const userCreate = {
     const { username, email, password } = req.body;
     // check for email password and username
     if ((!username, !email, !password)) {
-      throw new Error("username email and password is required");
+      throw new Error("username Email and Password is required");
     }
     //findOne email it throw an error
     let user = await User.findOne({ email });
     if (user) {
-      res.status(400).json({ message: "Email is already Registered" });
+      throw new Error(" Email is  already registered");
     }
     //hashed the password with bcrypt
     const salt = await bcrypt.genSalt(10);
@@ -29,14 +29,23 @@ const userCreate = {
   loginUser: asyncHandler(async (req, res) => {
     const { email, password } = req.body;
     if ((!email, !password)) {
-      res.status(400).json({ message: "Email and Password is required" });
+      throw new Error("Email and Password is required");
     }
     let user = await User.findOne({ email });
     if (!user) {
-      res.status(404).json({ message: "check you Email and password " });
+      throw new Error("check your Email and Password ");
     }
     const comparePassword = await bcrypt.compare(password, user.password);
-    res.status(201).json({ message: "Login Successful", user });
+
+    //res.status(201).json({ message: "Login Successful", user });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_TOKEN, {
+      expiresIn: "30d",
+    });
+    res.json({
+      username: user.username,
+      email: user.email,
+      token,
+    });
   }),
 };
 module.exports = userCreate;
