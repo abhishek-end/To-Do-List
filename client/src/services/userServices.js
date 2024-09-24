@@ -16,3 +16,16 @@ export const registerAPI = async ({ username, email, password }) => {
     throw err;
   }
 };
+//!loginAPI
+export const loginAPI = async ({ email, password }) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/login`, {
+      email,
+      password,
+    });
+    return response.data;
+  } catch (err) {
+    console.error("Error During Login", err);
+    throw err;
+  }
+};

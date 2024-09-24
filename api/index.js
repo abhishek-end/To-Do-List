@@ -6,6 +6,8 @@ const connectDB = require("./DB/configdb");
 const router = require("./routes/userRoutes");
 const errorHandle = require("./middleware/errorHandle");
 const cors = require("cors");
+const categoryController = require("./controller/categoryController");
+const categoryRouter = require("./routes/categoryRoutes");
 
 connectDB();
 
@@ -24,6 +26,7 @@ app.get("/", (req, res) => {
   res.send(`Server is Running on PORT ${port}`);
 });
 app.use("/", router);
+app.use("/", categoryRouter);
 //handle errors
 app.use(errorHandle);
 app.listen(port, () => {

@@ -1,9 +1,9 @@
 import React from "react";
 import * as Yup from "yup";
-import { isString, useFormik } from "formik";
-import { useMatch, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { registerAPI } from "../../services/userServices";
+import { useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
 
 const Register = () => {
   const validationSchema = Yup.object().shape({
@@ -46,10 +46,9 @@ const Register = () => {
     },
     validationSchema,
     onSubmit: (value) => {
-      console.log(value);
       handleReset();
       mutateAsync(value)
-        .then((value) => {
+        .then(() => {
           if (isSuccess) navigate("/login");
         })
         .catch((err) => {
@@ -61,9 +60,6 @@ const Register = () => {
   return (
     <>
       <h1 className='text-2xl font-bold mb-6 text-center'>Register</h1>
-      {isError ?? {
-        error: "success",
-      }}
       <form
         onSubmit={handleSubmit}
         className='max-w-md mx-auto bg-white p-6 rounded-lg shadow-md'
