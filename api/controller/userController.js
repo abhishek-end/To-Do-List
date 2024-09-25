@@ -49,8 +49,9 @@ const userCreate = {
   }),
 
   profile: asyncHandler(async (req, res) => {
-    // Fetch the user ID from the decoded token
     const userId = req.user;
+    console.log(userId);
+
     const user = await User.findById(userId);
     if (!user) {
       return res.status(401).json({ message: "Login Again or Token Expired" });
@@ -60,7 +61,6 @@ const userCreate = {
       username: user.username,
       email: user.email,
       id: user._id,
-      user: req.user,
     });
   }),
 };
