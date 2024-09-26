@@ -1,8 +1,4 @@
 export const getUserFromLocalStorage = () => {
-  const token = localStorage.getItem("userinfo");
-  if (token) {
-    const parseUserInfo = JSON.parse(token);
-    return parseUserInfo?.token;
-  }
-  return null;
+  const token = JSON.parse(localStorage.getItem("userInfo") || null);
+  return token?.token;
 };

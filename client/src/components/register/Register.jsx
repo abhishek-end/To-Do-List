@@ -4,7 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { registerAPI } from "../../services/userServices";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-
+import AlertMessage from "../ErrorMessage/AlertMessage";
 const Register = () => {
   const validationSchema = Yup.object().shape({
     username: Yup.string()
@@ -36,6 +36,7 @@ const Register = () => {
     handleChange,
     handleSubmit,
     handleReset,
+
     touched,
   } = useFormik({
     initialValues: {
@@ -60,6 +61,13 @@ const Register = () => {
   return (
     <>
       <h1 className='text-2xl font-bold mb-6 text-center'>Register</h1>
+      {isError && (
+        <AlertMessage type='error' message={"User Already Registered"} />
+      )}
+      {isSuccess && (
+        <AlertMessage type='success' message={"success register"} />
+      )}
+      {isPending && <AlertMessage type='loading' message={"Create Account"} />}
       <form
         onSubmit={handleSubmit}
         className='max-w-md mx-auto bg-white p-6 rounded-lg shadow-md'

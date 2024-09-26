@@ -7,15 +7,15 @@ const categoryController = {
     if (!req.user) {
       throw new Error("Unauthorized Can-not crate list");
     }
-    const { title, description, Date } = req.body;
-    if (!title || !description || !Date) {
+    const { title, description, date } = req.body;
+    if (!title || !description || !date) {
       throw new Error("Title Description and Date is required");
     }
     const existing = await CategoryModel.findOne({
       title,
       user: req.user,
     });
-    console.log({ user: req.user }, "CREATELIST");
+    // console.log({ user: req.user }, "CREATELIST");
 
     if (existing) {
       throw new Error("Category already Exist");
@@ -23,7 +23,7 @@ const categoryController = {
     const createList = await CategoryModel.create({
       title,
       description,
-      Date,
+      date,
       user: req.user,
     });
 
@@ -48,8 +48,6 @@ const categoryController = {
       throw new Error("Unauthorized");
     }
     const task = await CategoryModel.findByIdAndUpdate(req.params.id);
-
-    console.log(req.params.id);
     if (!task) {
       return res.status(404).json({ message: "Task not found" });
     }
@@ -64,14 +62,14 @@ const categoryController = {
     }
     const userId = req.user;
     const dataId = req.params.id;
-    console.log(userId, "userLog", dataId, "data");
+    // console.log(userId, "userLog", dataId, "data");
 
     const deleteBy = await CategoryModel.findOneAndDelete({
       _id: dataId,
       user: userId,
     });
 
-    console.log(dataId, userId, "-", "user");
+    console.log(dataId, "= dataID", userId, "-", "user");
 
     res.status(201).json({ message: "Task Delete Successfully", deleteBy });
   }),

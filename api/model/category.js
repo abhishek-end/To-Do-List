@@ -19,11 +19,7 @@ const categorySchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    Date: {
-      type: Date,
-      default: Date.now,
-      required: true,
-    },
+    date: { type: Date, default: Date.now, required: true },
   },
   { timestamps: true }
 );

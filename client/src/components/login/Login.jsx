@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { loginAction } from "../../redux/Slice/createSlice";
 import { json, useNavigate } from "react-router-dom";
 import { encryptData } from "../../utils/crypto";
+import AlertMessage from "../ErrorMessage/AlertMessage";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().required("Email is Required"),
@@ -26,29 +27,42 @@ const login = () => {
     handleReset,
     handleSubmit,
     handleChange,
+    isPending,
     touched,
   } = useFormik({
     initialValues: {
-      email: "tifinehace@mailinator.com",
-      password: "1234",
+      email: "register@gmail.com",
+      password: "123456789",
     },
     validationSchema,
     onSubmit: (data) => {
       mutateAsync(data).then((data) => {
         dispatch(loginAction(data));
-        const encryptedData = encryptData(data);
-        localStorage.setItem("userInfo", JSON.stringify(encryptedData));
+        // const encryptedData = encryptData(data);
+        localStorage.setItem("userInfo", JSON.stringify(data));
       });
     },
   });
   useEffect(() => {
     setTimeout(() => {
       if (isSuccess) navigate("/");
-    }, 2000);
+    }, 1000);
   }, [isSuccess]);
   return (
     <div>
       <h1 className='text-2xl font-bold mb-6 text-center'>Login</h1>
+      {isError && (
+        <AlertMessage type='error' message={"Check Email and password"} />
+      )}
+      {isSuccess && (
+        <AlertMessage
+          type='success'
+          message={"Login Success redirect to Home ...."}
+        />
+      )}
+      {isPending && (
+        <AlertMessage type='loading' message={"logging You in ....."} />
+      )}
       <form
         onSubmit={handleSubmit}
         className='max-w-md mx-auto bg-white p-6 rounded-lg shadow-md'
